@@ -6,124 +6,72 @@ library(ggplot2)
 
 setwd("~/Desktop/Stat 479/Final-Project/Data")
 download.file("https://studentaid.gov/sites/default/files/fsawg/datacenter/library/ACSD.xls", filename)
-dischargereport<-read_excel(filename, sheet=2, skip=5, col_names=c("opeid6", "name", "city", "state", "type", "discharged_borrowers","discharged_amount"))
+dischargereport<-read_excel(filename, sheet=2, skip=5, col_names=c("opeid6", "name", "city", "state", "type", "discharged_borrowers","discharged_amount"), col_types=c("text", "text", "text", "text", "text", "numeric", "numeric"))
 dischargereport<-filter(dischargereport, !is.na(name))
 
-sc_key("bk0cLyNPPdUahxCeXpv5SdZpjFuhw1Sawsf8iZLN")
-vars<-sc_dict(".", return_df=T, limit="Inf")
-varnames<-c("OPEID")
-for(scyear in 2012:2018) {
-scyear<-sc_init() %>%
-  sc_select(UNITID,
-            OPEID,
-            OPEID6,
-            INSTNM, 
-            CITY,
-            STABBR,
-            ZIP,
-            ACCREDAGENCY,
-            HCM2,
-            MAIN,
-            NUMBRANCH,
-            PREDDEG, 
-            CONTROL,
-            LATITUDE,
-            LONGITUDE,
-            CCBASIC,
-            HBCU,
-            PBI,
-            ANNHI,
-            TRIBAL,
-            AANAPII,
-            HSI,
-            NANTI,
-            MENONLY,
-            WOMENONLY,
-            RELAFFIL,
-            ADM_RATE,
-            ADM_RATE_ALL,
-            SAT_AVG,
-            SAT_AVG_ALL,
-            UGDS_WHITE,
-            UGDS_BLACK,
-            UGDS_HISP,
-            UGDS_ASIAN,
-            UGDS_AIAN,
-            UGDS_NHPI,
-            UGDS_2MOR,
-            UGDS_NRA,
-            UGDS_UNKN,
-            PPTUG_EF,
-            PPTUG_EF2,
-            NPT4_PUB,
-            NPT4_PRIV,
-            NPT4_PROG,
-            NPT4_OTHER,
-            TUITFTE,
-            INEXPFTE,
-            AVGFACSAL,
-            PFTFAC,
-            PCTPELL,
-            PCTFLOAN,
-            UG25ABV,
-            INC_PCT_LO,
-            DEP_STAT_PCT_IND,
-            IND_INC_PCT_LO,
-            DEP_INC_PCT_LO,
-            PAR_ED_PCT_1STGEN,
-            INC_PCT_M1,
-            INC_PCT_M2,
-            INC_PCT_H1,
-            INC_PCT_H2,
-            DEP_INC_PCT_M1,
-            DEP_INC_PCT_M2,
-            DEP_INC_PCT_H1,
-            DEP_INC_PCT_H2,
-            IND_INC_PCT_M1,
-            IND_INC_PCT_M2,
-            IND_INC_PCT_H1,
-            IND_INC_PCT_H2,
-            PAR_ED_PCT_MS,
-            PAR_ED_PCT_HS,
-            PAR_ED_PCT_PS,
-            DEBT_MDN,
-            GRAD_DEBT_MDN,
-            WDRAW_DEBT_MDN,
-            LO_INC_DEBT_MDN,
-            MD_INC_DEBT_MDN,
-            HI_INC_DEBT_MDN,
-            DEP_DEBT_MDN,
-            IND_DEBT_MDN,
-            PELL_DEBT_MDN,
-            NOPELL_DEBT_MDN,
-            FEMALE_DEBT_MDN,
-            MALE_DEBT_MDN,
-            FIRSTGEN_DEBT_MDN,
-            NOTFIRSTGEN_DEBT_MDN,
-            DEBT_N,
-            GRAD_DEBT_N,
-            WDRAW_DEBT_N,
-            LO_INC_DEBT_N,
-            MD_INC_DEBT_N,
-            HI_INC_DEBT_N,
-            DEP_DEBT_N,
-            IND_DEBT_N,
-            PELL_DEBT_N,
-            NOPELL_DEBT_N,
-            FEMALE_DEBT_N,
-            MALE_DEBT_N,
-            FIRSTGEN_DEBT_N,
-            NOTFIRSTGEN_DEBT_N) %>%
-  sc_filter(curroper==0) %>%
-  sc_year(year) %>%
-  sc_get()
-  scyear<-mutate(scyear, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8))
-  filename=paste("scorecard", year)
-  write.csv(scyear, filename)
-}
+download.file("https://ed-public-download.app.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip", filename)
+unzip(filename)
+scorecard2010<-read.csv("CollegeScorecard_Raw_Data/MERGED2010_11_PP.csv", na.strings="NULL")
+scorecard2011<-read.csv("CollegeScorecard_Raw_Data/MERGED2011_12_PP.csv", na.strings="NULL")
+scorecard2012<-read.csv("CollegeScorecard_Raw_Data/MERGED2012_13_PP.csv", na.strings="NULL")
+scorecard2013<-read.csv("CollegeScorecard_Raw_Data/MERGED2013_14_PP.csv", na.strings="NULL")
+scorecard2014<-read.csv("CollegeScorecard_Raw_Data/MERGED2014_15_PP.csv", na.strings="NULL")
+scorecard2015<-read.csv("CollegeScorecard_Raw_Data/MERGED2015_16_PP.csv", na.strings="NULL")
+scorecard2016<-read.csv("CollegeScorecard_Raw_Data/MERGED2016_17_PP.csv", na.strings="NULL")
+scorecard2017<-read.csv("CollegeScorecard_Raw_Data/MERGED2017_18_PP.csv", na.strings="NULL")
+scorecard2018<-read.csv("CollegeScorecard_Raw_Data/MERGED2018_19_PP.csv", na.strings="NULL")
+names(scorecard2010)<-tolower(names(scorecard2010))
+names(scorecard2011)<-tolower(names(scorecard2011))
+names(scorecard2012)<-tolower(names(scorecard2012))
+names(scorecard2013)<-tolower(names(scorecard2013))
+names(scorecard2014)<-tolower(names(scorecard2014))
+names(scorecard2015)<-tolower(names(scorecard2015))
+names(scorecard2016)<-tolower(names(scorecard2016))
+names(scorecard2017)<-tolower(names(scorecard2017))
+names(scorecard2018)<-tolower(names(scorecard2018))
 
-scorecard2018<-read.csv("scorecard 2018")
-scorecard2018<-mutate(scorecard2018, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8))
-closures<-inner_join(scorecard2018, dischargereport, by="opeid6")
+scorecard2010<-mutate(scorecard2010, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8), year=2010)
+closures2010<-inner_join(scorecard2010, dischargereport)
 
-gg
+scorecard2011<-mutate(scorecard2011, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8), year=2011)
+closures2011<-inner_join(scorecard2011, dischargereport)
+
+scorecard2012<-mutate(scorecard2012, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8), year=2012)
+closures2012<-inner_join(scorecard2012, dischargereport)
+
+scorecard2013<-mutate(scorecard2013, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8), year=2013)
+closures2013<-inner_join(scorecard2013, dischargereport)
+
+scorecard2014<-mutate(scorecard2014, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8), year=2014)
+closures2014<-inner_join(scorecard2014, dischargereport)
+
+scorecard2015<-mutate(scorecard2015, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8), year=2015)
+closures2015<-inner_join(scorecard2015, dischargereport)
+
+scorecard2016<-mutate(scorecard2016, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8), year=2016)
+closures2016<-inner_join(scorecard2016, dischargereport)
+
+scorecard2017<-mutate(scorecard2017, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8), year=2017)
+closures2017<-inner_join(scorecard2017, dischargereport)
+
+scorecard2018<-mutate(scorecard2018, opeid=str_pad(opeid, 8, side=c("left"), pad="0"), opeid6=substring(opeid, 1, 6), opeidend=substring(opeid, 7,8),year=2018)
+closures2018<-inner_join(scorecard2018, dischargereport)
+
+closures<-rbind(closures2010, closures2011, closures2012, closures2013, closures2014, closures2015, closures2016, closures2017, closures2018)
+not_all_na <- function(x) any(!is.na(x))
+closures<-select_if(closures, not_all_na) %>%
+  mutate(average_discharge=discharged_amount/discharged_borrowers*1000, level=ifelse(preddeg==1, "Certificate", ifelse(preddeg==2, "Associate's", ifelse(preddeg==3, "Bachelor's", "Other")))) %>%
+  mutate(level2=factor(level, levels=c("Certificate", "Associate's", "Bachelor's", "Other"))) %>%
+  rowwise() %>% 
+  mutate(Enrollment = sum(ug12mn, g12mn, na.rm = TRUE))
+         
+closures_recent<-closures %>% group_by(opeid6) %>%
+  mutate(year_recent=max(year)) %>%
+  filter(year_recent==year) %>%
+  select_if(not_all_na)
+
+
+write.csv(closures_recent, "closures_recent")
+
+
+
