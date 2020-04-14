@@ -7,10 +7,10 @@ output: md_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-```
-```{r}
 library(ggplot2)
 library(dplyr)
+```
+```{r}
 closures_recent<-read.csv("~/Desktop/Stat 479/Final-Project/Data/closures_recent")
  closures_recent<-mutate(closures_recent, level2=factor(level, levels=c("Certificate", "Associate's", "Bachelor's", "Other")), ordered=TRUE)
   
