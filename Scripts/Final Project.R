@@ -62,7 +62,7 @@ closures<-rbind(closures2010, closures2011, closures2012, closures2013, closures
 not_all_na <- function(x) any(!is.na(x))
 closures<-select_if(closures, not_all_na) %>%
   mutate(average_discharge=discharged_amount/discharged_borrowers*1000, level=ifelse(preddeg==1, "Certificate", ifelse(preddeg==2, "Associate's", ifelse(preddeg==3, "Bachelor's", "Other")))) %>%
-  mutate(level2=factor(level, levels=c("Certificate", "Associate's", "Bachelor's", "Other"), ordered=TRUE)) %>%
+  mutate(level2=factor(level, levels=c("Certificate", "Associate's", "Bachelor's", "Other")), ordered=TRUE) %>%
   rowwise() %>% 
   mutate(Enrollment = sum(ug12mn, g12mn, na.rm = TRUE))
          
