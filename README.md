@@ -1,3 +1,14 @@
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
 ![](README_files/figure-markdown_strict/unnamed-chunk-1-1.png)
 
 *Figure 1* uses data from the U.S. Department of Education’s Federal
