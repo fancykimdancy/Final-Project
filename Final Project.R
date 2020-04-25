@@ -5,6 +5,7 @@ library(stringr)
 library(ggplot2)
 
 setwd("~/Desktop/Stat 479/Final-Project/Data")
+filename<-tempfile()
 download.file("https://studentaid.gov/sites/default/files/fsawg/datacenter/library/ACSD.xls", filename)
 dischargereport<-read_excel(filename, sheet=2, skip=5, col_names=c("opeid6", "name", "city", "state", "type", "discharged_borrowers","discharged_amount"), col_types=c("text", "text", "text", "text", "text", "numeric", "numeric"))
 dischargereport<-filter(dischargereport, !is.na(name))
@@ -72,6 +73,7 @@ closures_recent<-closures %>% group_by(opeid6) %>%
 
 
 write.csv(closures_recent, "closures_recent")
+write.csv(closures, "closures")
 
 
 
