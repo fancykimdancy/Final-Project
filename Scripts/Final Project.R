@@ -12,15 +12,15 @@ dischargereport<-filter(dischargereport, !is.na(name))
 
 download.file("https://ed-public-download.app.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip", filename)
 unzip(filename)
-scorecard2010<-read.csv("CollegeScorecard_Raw_Data/MERGED2010_11_PP.csv", na.strings="NULL")
-scorecard2011<-read.csv("CollegeScorecard_Raw_Data/MERGED2011_12_PP.csv", na.strings="NULL")
-scorecard2012<-read.csv("CollegeScorecard_Raw_Data/MERGED2012_13_PP.csv", na.strings="NULL")
-scorecard2013<-read.csv("CollegeScorecard_Raw_Data/MERGED2013_14_PP.csv", na.strings="NULL")
-scorecard2014<-read.csv("CollegeScorecard_Raw_Data/MERGED2014_15_PP.csv", na.strings="NULL")
-scorecard2015<-read.csv("CollegeScorecard_Raw_Data/MERGED2015_16_PP.csv", na.strings="NULL")
-scorecard2016<-read.csv("CollegeScorecard_Raw_Data/MERGED2016_17_PP.csv", na.strings="NULL")
-scorecard2017<-read.csv("CollegeScorecard_Raw_Data/MERGED2017_18_PP.csv", na.strings="NULL")
-scorecard2018<-read.csv("CollegeScorecard_Raw_Data/MERGED2018_19_PP.csv", na.strings="NULL")
+scorecard2010<-read.csv("CollegeScorecard_Raw_Data/MERGED2010_11_PP.csv", na.strings=c("NULL", "NA", "PrivacySuppressed"))
+scorecard2011<-read.csv("CollegeScorecard_Raw_Data/MERGED2011_12_PP.csv", na.strings=c("NULL", "NA", "PrivacySuppressed"))
+scorecard2012<-read.csv("CollegeScorecard_Raw_Data/MERGED2012_13_PP.csv", na.strings=c("NULL", "NA", "PrivacySuppressed"))
+scorecard2013<-read.csv("CollegeScorecard_Raw_Data/MERGED2013_14_PP.csv", na.strings=c("NULL", "NA", "PrivacySuppressed"))
+scorecard2014<-read.csv("CollegeScorecard_Raw_Data/MERGED2014_15_PP.csv", na.strings=c("NULL", "NA", "PrivacySuppressed"))
+scorecard2015<-read.csv("CollegeScorecard_Raw_Data/MERGED2015_16_PP.csv", na.strings=c("NULL", "NA", "PrivacySuppressed"))
+scorecard2016<-read.csv("CollegeScorecard_Raw_Data/MERGED2016_17_PP.csv", na.strings=c("NULL", "NA", "PrivacySuppressed"))
+scorecard2017<-read.csv("CollegeScorecard_Raw_Data/MERGED2017_18_PP.csv", na.strings=c("NULL", "NA", "PrivacySuppressed"))
+scorecard2018<-read.csv("CollegeScorecard_Raw_Data/MERGED2018_19_PP.csv", na.strings=c("NULL", "NA", "PrivacySuppressed"))
 names(scorecard2010)<-tolower(names(scorecard2010))
 names(scorecard2011)<-tolower(names(scorecard2011))
 names(scorecard2012)<-tolower(names(scorecard2012))
@@ -62,7 +62,7 @@ closures<-rbind(closures2010, closures2011, closures2012, closures2013, closures
 not_all_na <- function(x) any(!is.na(x))
 closures<-select_if(closures, not_all_na) %>%
   mutate(average_discharge=discharged_amount/discharged_borrowers*1000, level=ifelse(preddeg==1, "Certificate", ifelse(preddeg==2, "Associate's", ifelse(preddeg==3, "Bachelor's", "Other")))) %>%
-  mutate(level2=factor(level, levels=c("Certificate", "Associate's", "Bachelor's", "Other")), ordered=TRUE) %>%
+  mutate(level2=factor(level, levels=c("Certificate", "Associate's", "Bachelor's", "Other"))) %>%
   rowwise() %>% 
   mutate(Enrollment = sum(ug12mn, g12mn, na.rm = TRUE))
          
